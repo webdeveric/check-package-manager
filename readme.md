@@ -23,6 +23,6 @@ npm i check-package-manager -D
 
 ```
 npx corepack enable
-pnpm install
-pnpm build
+npm ci
+npm run build
 ```
