@@ -55,14 +55,11 @@
     "semver": "^7.3.8"
   },
   "devDependencies": {
-    "@types/chai": "^4.3.4",
-    "@types/mocha": "^10.0.1",
     "@types/node": "^18.11.18",
     "@types/semver": "^7.3.13",
     "@vitest/coverage-c8": "^0.26.2",
     "@webdeveric/eslint-config-ts": "^0.5.2",
     "@webdeveric/utils": "^0.23.0",
-    "chai": "^4.3.7",
     "cspell": "^6.18.0",
     "esbuild": "^0.16.10",
     "esbuild-plugin-clean": "^1.0.1",
