@@ -36,7 +36,7 @@
     "lint": "eslint ./src ./*.mjs --fix",
     "test": "vitest -c vitest.config.mts",
     "coverage": "vitest run  -c vitest.config.mts --coverage",
-    "prepublishOnly": "pnpm typecheck && pnpm spellcheck && pnpm lint && pnpm coverage && pnpm build"
+    "prepublishOnly": "npm run typecheck && npm run spellcheck && npm run lint && npm run coverage && npm run build"
   },
   "keywords": [
     "package",
