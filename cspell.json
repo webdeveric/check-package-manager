@@ -1,0 +1,27 @@
+{
+  "version": "0.2",
+  "words": [
+    "cnpm",
+    "colors",
+    "corepack",
+    "downlevel",
+    "esbuild",
+    "esnext",
+    "lcov",
+    "mocha",
+    "npminstall",
+    "nvmrc",
+    "nyc",
+    "outdir",
+    "pnpm",
+    "postbuild",
+    "preinstall",
+    "reporter",
+    "typecheck",
+    "webdeveric",
+    "xargs"
+  ],
+  "ignorePaths": [
+    "node_modules/**"
+  ]
+}

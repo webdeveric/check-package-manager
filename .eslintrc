@@ -1,0 +1,23 @@
+{
+  "root": true,
+  "extends": [
+    "@webdeveric/eslint-config-ts"
+  ],
+  "env": {
+    "browser": false,
+    "es6": true,
+    "mocha": true,
+    "node": true
+  },
+  "parserOptions": {
+    "project": ["./tsconfig.json"]
+  },
+  "overrides": [
+    {
+      "files":["./*.mjs"],
+      "parserOptions": {
+        "project": ["./tsconfig.project-files.json"]
+      }
+    }
+  ]
+}

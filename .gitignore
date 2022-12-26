@@ -1,0 +1,7 @@
+node_modules
+npm-debug.log
+coverage.lcov
+.nyc_output/
+coverage/
+private/
+dist/
