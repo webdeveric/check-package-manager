@@ -10,13 +10,13 @@ import pkg from './package.json' assert { type: 'json' };
 
 try {
   const results = await build({
-    entryPoints: [ './src/cli.ts' ],
+    entryPoints: ['./src/cli.ts'],
     outdir: './dist',
     platform: 'node',
     bundle: true,
     format: 'esm',
     target: `node${process.versions.node}`,
-    minify: true,
+    minify: process.env.NODE_ENV === 'production',
     banner: {
       js: trimIndentation(`
         /*!
@@ -29,10 +29,10 @@ try {
     },
     plugins: [
       clean({
-        patterns: [ './dist/*' ],
+        patterns: ['./dist/*'],
       }),
       nodeExternals(),
-      environmentPlugin([ 'NODE_ENV', 'npm_package_engines_node' ]),
+      environmentPlugin(['npm_package_engines_node']),
     ],
   });
 
