@@ -1,12 +1,9 @@
 {
   "root": true,
-  "extends": [
-    "@webdeveric/eslint-config-ts"
-  ],
+  "extends": ["@webdeveric/eslint-config-ts", "prettier"],
   "env": {
     "browser": false,
     "es6": true,
-    "mocha": true,
     "node": true
   },
   "parserOptions": {
@@ -14,9 +11,15 @@
   },
   "overrides": [
     {
-      "files":["./*.mjs"],
+      "files": ["./*.mjs", "./*.mts"],
       "parserOptions": {
         "project": ["./tsconfig.project-files.json"]
+      }
+    },
+    {
+      "files": ["**/*.test.ts"],
+      "rules": {
+        "@typescript-eslint/no-explicit-any": ["off"]
       }
     }
   ]
