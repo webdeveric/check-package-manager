@@ -1,6 +1,4 @@
-import {
-  describe, expect, it,
-} from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { parsePackageManager, parsePackageManagerUserAgent } from './utils.js';
 
 describe('parsePackageManagerUserAgent()', () => {

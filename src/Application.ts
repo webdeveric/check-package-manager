@@ -20,7 +20,7 @@ export default class Application extends Command {
     });
   }
 
-  registerCommand(customCommand: CustomCommand):this {
+  registerCommand(customCommand: CustomCommand): this {
     customCommand.register(this);
 
     return this;

@@ -12,9 +12,7 @@ import type { PackageMangerDetails } from './types.js';
  * `yarn/1.22.15 npm/? node/v16.15.0 linux x64
  * `pnpm/7.19.0 npm/? node/v16.15.0 linux x64
  */
-export const parsePackageManagerUserAgent = (
-  userAgent?: string,
-): PackageMangerDetails | undefined => {
+export const parsePackageManagerUserAgent = (userAgent?: string): PackageMangerDetails | undefined => {
   const match = userAgent?.match(/^([a-z]+)\/([^\s]+)/i);
 
   if (Array.isArray(match)) {
@@ -29,12 +27,14 @@ export const parsePackageManagerUserAgent = (
 };
 
 export const parsePackageManager = (input: string): PackageMangerDetails | undefined => {
-  const [ name, version ] = input.split('@');
+  const [name, version] = input.split('@');
 
   return name && version ? { name, version } : undefined;
 };
 
-export const getJson = async <T extends Record<string, unknown> = Record<string, unknown>>(filePath: string): Promise<T> => {
+export const getJson = async <T extends Record<string, unknown> = Record<string, unknown>>(
+  filePath: string,
+): Promise<T> => {
   const contents = await readFile(filePath, 'utf-8');
 
   const data = JSON.parse(contents);
@@ -43,10 +43,7 @@ export const getJson = async <T extends Record<string, unknown> = Record<string,
 };
 
 export const getPackageJsonPath = (): string => {
-  return (
-    process.env.npm_package_json ??
-    path.resolve(process.cwd(), './package.json')
-  );
+  return process.env.npm_package_json ?? path.resolve(process.cwd(), './package.json');
 };
 
 export const getPackageJson = async <T extends Record<string, unknown> = Record<string, unknown>>(): Promise<T> => {
@@ -64,8 +61,7 @@ export const getPackageManagerFromPackageJson = async (): Promise<string | undef
 export const getConfiguredPackageManager = async (): Promise<PackageMangerDetails | undefined> => {
   const packageManager =
     // Yarn and pnpm will define this env var.
-    process.env.npm_package_packageManager ??
-    (await getPackageManagerFromPackageJson());
+    process.env.npm_package_packageManager ?? (await getPackageManagerFromPackageJson());
 
   if (packageManager) {
     return parsePackageManager(packageManager);

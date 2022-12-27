@@ -1,7 +1,5 @@
 #!/usr/bin/env node
-import {
-  description, name, version,
-} from 'check-package-manager/package.json';
+import { description, name, version } from 'check-package-manager/package.json';
 
 import Application from './Application.js';
 import { assertSupportedNodeVersion } from './assertions.js';
@@ -14,7 +12,7 @@ try {
     name: name,
     description: description,
     version: version,
-    commands: [ new CheckPackageManagerCommand() ],
+    commands: [new CheckPackageManagerCommand()],
   });
 
   await app.parseAsync(process.argv);
