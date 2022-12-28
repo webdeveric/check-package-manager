@@ -1,6 +1,11 @@
 import { satisfies } from 'semver';
 
-import { getConfiguredPackageManager, parsePackageManager, parsePackageManagerUserAgent } from '@src/utils.js';
+import {
+  formatPackageMangerDetails,
+  getConfiguredPackageManager,
+  parsePackageManager,
+  parsePackageManagerUserAgent,
+} from '@src/utils.js';
 import { CustomCommand } from './CustomCommand.js';
 import { ExitCodes } from '@src/types.js';
 
@@ -18,7 +23,7 @@ export class CheckPackageManagerCommand extends CustomCommand {
     const command = app
       .command('check', { isDefault: true })
       .description('Check that the correct package manager is being used.')
-      .argument('[packageManager]', 'Package manager name and version')
+      .argument('[packageManager]', '<package manager name>[@<version>]', parsePackageManager)
       .option('--info', 'Print info messages', false)
       .option('--debug', 'Print debug messages', false)
       .action(this.action.bind(this));
@@ -31,7 +36,7 @@ export class CheckPackageManagerCommand extends CustomCommand {
     context: {
       options: CheckPackageManagerOptions;
       calledFromDependency: boolean;
-      packageManagerArg: string | undefined;
+      packageManagerArg: PackageMangerDetails | undefined;
       configuredPackageManager: PackageMangerDetails | undefined;
       currentPackageManager: PackageMangerDetails | undefined;
     },
@@ -53,17 +58,13 @@ export class CheckPackageManagerCommand extends CustomCommand {
 
       if (typeof context.packageManagerArg === 'undefined') {
         messages.push(
-          'Using "packageManager" property from your package.json to determine the configured package manager.',
+          'Trying to use "packageManager" property from your package.json to determine the configured package manager.',
         );
       }
 
       messages.push(
-        context.configuredPackageManager
-          ? `Configured package manager: ${context.configuredPackageManager.name}@${context.configuredPackageManager.version}`
-          : `Configured package manager: ${context.configuredPackageManager}`,
-        context.currentPackageManager
-          ? `Current package manager: ${context.currentPackageManager.name}@${context.currentPackageManager.version}`
-          : `Current package manager: ${context.currentPackageManager}`,
+        `Configured package manager ${formatPackageMangerDetails(context.configuredPackageManager)}`,
+        `Current package manager ${formatPackageMangerDetails(context.currentPackageManager)}`,
       );
     }
 
@@ -73,9 +74,15 @@ export class CheckPackageManagerCommand extends CustomCommand {
       );
     }
 
+    if (code === ExitCodes.MisconfiguredPackageManager) {
+      messages.push('packageManager value not found.');
+    }
+
     if (code & ExitCodes.WrongPackageManager && context.configuredPackageManager && context.currentPackageManager) {
       messages.push(
-        `${process.env.npm_package_name} should be using ${context.configuredPackageManager.name} version ${context.configuredPackageManager.version} instead of ${context.currentPackageManager.name} version ${context.currentPackageManager.version}`,
+        `${process.env.npm_package_name} should be using ${formatPackageMangerDetails(
+          context.configuredPackageManager,
+        )} instead of ${formatPackageMangerDetails(context.currentPackageManager)}`,
       );
 
       if (!context.packageManagerArg) {
@@ -104,6 +111,10 @@ export class CheckPackageManagerCommand extends CustomCommand {
       code |= ExitCodes.DoingItWrong;
     }
 
+    if (!configuredPackageManager) {
+      code |= ExitCodes.MisconfiguredPackageManager;
+    }
+
     if (configuredPackageManager && currentPackageManager) {
       if (configuredPackageManager.name !== currentPackageManager.name) {
         code |= ExitCodes.WrongPackageManagerName;
@@ -126,7 +137,7 @@ export class CheckPackageManagerCommand extends CustomCommand {
   }
 
   async action(
-    packageManagerArg: string | undefined,
+    packageManagerArg: PackageMangerDetails | undefined,
     options: CheckPackageManagerOptions,
     cmd: Command,
   ): Promise<void> {

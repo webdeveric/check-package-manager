@@ -1,12 +1,13 @@
 export type PackageMangerDetails = {
-  name: string | undefined;
+  name: string;
   version: string | undefined;
 };
 
 export enum ExitCodes {
   OK = 0,
   DoingItWrong = 1,
-  WrongPackageManagerName = 2,
-  WrongPackageManagerVersion = 4,
+  MisconfiguredPackageManager = 2,
+  WrongPackageManagerName = 4,
+  WrongPackageManagerVersion = 8,
   WrongPackageManager = WrongPackageManagerName | WrongPackageManagerVersion,
 }
