@@ -1,5 +1,7 @@
 # check-package-manager
 
+[![Node.js CI](https://github.com/webdeveric/check-package-manager/actions/workflows/node.js.yml/badge.svg)](https://github.com/webdeveric/check-package-manager/actions/workflows/node.js.yml)
+
 ## Install
 
 ```shell
