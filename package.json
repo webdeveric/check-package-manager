@@ -65,6 +65,7 @@
   },
   "prettier": "@webdeveric/prettier-config",
   "dependencies": {
+    "@webdeveric/utils": "^0.23.0",
     "commander": "^9.4.1",
     "semver": "^7.3.8"
   },
@@ -74,7 +75,6 @@
     "@vitest/coverage-c8": "^0.26.2",
     "@webdeveric/eslint-config-ts": "^0.5.2",
     "@webdeveric/prettier-config": "^0.2.0",
-    "@webdeveric/utils": "^0.23.0",
     "cspell": "^6.18.0",
     "esbuild": "^0.16.10",
     "esbuild-plugin-clean": "^1.0.1",
