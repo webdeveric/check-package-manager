@@ -3,7 +3,7 @@
     "target": "es2021",
     "module": "esnext",
     "moduleResolution": "NodeNext",
-    "lib": ["DOM", "es2021"],
+    "lib": ["DOM", "es2021", "ES2022.Object"],
     "resolveJsonModule": true,
     "alwaysStrict": false,
     "strict": true,
