@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { parsePackageManager, parsePackageManagerUserAgent } from './utils.js';
+
+import {
+  convertToSemVer,
+  formatPackageMangerDetails,
+  parsePackageManager,
+  parsePackageManagerUserAgent,
+} from './utils.js';
 
 describe('parsePackageManagerUserAgent()', () => {
   it('Returns undefined when given an unknown user agent', () => {
@@ -39,9 +45,47 @@ describe('parsePackageManager()', () => {
     });
   });
 
+  it('Version is optional', () => {
+    expect(parsePackageManager('pnpm')).toEqual({
+      name: 'pnpm',
+      version: undefined,
+    });
+
+    expect(parsePackageManager('pnpm@')).toEqual({
+      name: 'pnpm',
+      version: undefined,
+    });
+  });
+
   it('Invalid values return undefined', () => {
     expect(parsePackageManager('')).toBeUndefined();
-    expect(parsePackageManager('pnpm')).toBeUndefined();
-    expect(parsePackageManager('pnpm@')).toBeUndefined();
+  });
+});
+
+describe('formatPackageMangerDetails()', () => {
+  it('Returns a string when given PackageMangerDetails', () => {
+    expect(
+      formatPackageMangerDetails({
+        name: 'npm',
+        version: '9.0.0',
+      }),
+    ).toBe('npm@9.0.0');
+  });
+});
+
+describe('convertToSemVer()', () => {
+  it('Converts input into valid semver', () => {
+    expect(convertToSemVer('1')).toBe('1.0.0');
+    expect(convertToSemVer('1.2')).toBe('1.2.0');
+    expect(convertToSemVer('1.2.3')).toBe('1.2.3');
+    expect(convertToSemVer('1.0.0-alpha.1')).toBe('1.0.0-alpha.1');
+    expect(convertToSemVer('1.0.0+meta')).toBe('1.0.0+meta');
+    expect(convertToSemVer('1.0.0-beta.2+meta')).toBe('1.0.0-beta.2+meta');
+    expect(convertToSemVer('1-beta.2+meta')).toBe('1.0.0-beta.2+meta');
+  });
+
+  it('Empty string is 0.0.0', () => {
+    expect(convertToSemVer('')).toBe('0.0.0');
+    expect(convertToSemVer(undefined)).toBe('0.0.0');
   });
 });

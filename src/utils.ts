@@ -1,7 +1,11 @@
 import path from 'node:path';
 import { readFile } from 'node:fs/promises';
 
+import { isObject, isOptionalString, isString } from '@webdeveric/utils/type-predicate';
+import { assertIsString } from '@webdeveric/utils/type-assertion';
+
 import type { PackageMangerDetails } from './types.js';
+import { parse } from 'semver';
 
 /**
  * Parse the package manager user agent string
@@ -19,17 +23,47 @@ export const parsePackageManagerUserAgent = (userAgent?: string): PackageMangerD
     const name = match.at(1);
     const version = match.at(2);
 
+    assertIsString(name);
+    assertIsString(version);
+
     return {
-      name: name === 'npminstall' ? 'cnpm' : name?.normalize(),
-      version: version?.normalize(),
+      name: name === 'npminstall' ? 'cnpm' : name.normalize(),
+      version: version.normalize(),
     };
   }
 };
 
-export const parsePackageManager = (input: string): PackageMangerDetails | undefined => {
-  const [name, version] = input.split('@');
+export const isPackageMangerDetails = (input: unknown): input is PackageMangerDetails => {
+  return (
+    isObject(input) &&
+    Object.hasOwn(input, 'name') &&
+    Object.hasOwn(input, 'version') &&
+    isString(input.name) &&
+    isOptionalString(input.version)
+  );
+};
 
-  return name && version ? { name, version } : undefined;
+export const convertToSemVer = (input: string | undefined): string => {
+  const parsed = parse(input);
+
+  if (parsed === null) {
+    const [version, ...rest] = (input ?? '').split(/(?=[+-])/);
+    const [major = '0', minor = '0', patch = '0'] = String(version || '0').split('.');
+
+    return `${major}.${minor}.${patch}${rest.join('')}`;
+  }
+
+  return parsed.raw;
+};
+
+export const parsePackageManager = (input: string | PackageMangerDetails): PackageMangerDetails | undefined => {
+  if (isPackageMangerDetails(input)) {
+    return input;
+  }
+
+  const [name, version] = input.split('@').map(part => part.trim());
+
+  return name ? { name, version: version?.length ? convertToSemVer(version) : undefined } : undefined;
 };
 
 export const getJson = async <T extends Record<string, unknown> = Record<string, unknown>>(
@@ -67,3 +101,6 @@ export const getConfiguredPackageManager = async (): Promise<PackageMangerDetail
     return parsePackageManager(packageManager);
   }
 };
+
+export const formatPackageMangerDetails = (input: PackageMangerDetails | undefined): string | undefined =>
+  input ? `${input.name}${input.version ? `@${input.version}` : ''}` : input;
