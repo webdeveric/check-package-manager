@@ -73,7 +73,7 @@
     "@types/node": "^18.11.18",
     "@types/semver": "^7.3.13",
     "@vitest/coverage-c8": "^0.26.2",
-    "@webdeveric/eslint-config-ts": "^0.5.2",
+    "@webdeveric/eslint-config-ts": "^0.6.0",
     "@webdeveric/prettier-config": "^0.2.0",
     "cspell": "^6.18.0",
     "esbuild": "^0.16.10",
