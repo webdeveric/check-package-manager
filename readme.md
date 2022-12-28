@@ -2,6 +2,10 @@
 
 [![Node.js CI](https://github.com/webdeveric/check-package-manager/actions/workflows/node.js.yml/badge.svg)](https://github.com/webdeveric/check-package-manager/actions/workflows/node.js.yml)
 
+Check that the correct package manager is being used with your project.
+
+To configure the correct package manager, you can the [`packageManager` property](https://nodejs.org/api/packages.html#packagemanager) in your `package.json` file or you can specify it in the cli arguments.
+
 ## Install
 
 ```shell
