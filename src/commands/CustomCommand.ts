@@ -1,6 +1,6 @@
-import type { Command } from 'commander';
-
 import type Application from '@src/Application.js';
+
+import type { Command } from 'commander';
 
 export abstract class CustomCommand {
   constructor(app?: Application) {

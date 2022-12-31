@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 import { description, name, version } from 'check-package-manager/package.json';
 
+import { CheckPackageManagerCommand } from '@commands/CheckPackageManagerCommand.js';
+
 import Application from './Application.js';
 import { assertSupportedNodeVersion } from './assertions.js';
-import { CheckPackageManagerCommand } from '@commands/CheckPackageManagerCommand.js';
 
 try {
   assertSupportedNodeVersion(process.versions.node);

@@ -1,11 +1,11 @@
-import path from 'node:path';
 import { readFile } from 'node:fs/promises';
+import path from 'node:path';
 
-import { isObject, isOptionalString, isString } from '@webdeveric/utils/type-predicate';
 import { assertIsString } from '@webdeveric/utils/type-assertion';
+import { isObject, isOptionalString, isString } from '@webdeveric/utils/type-predicate';
+import { parse } from 'semver';
 
 import type { PackageMangerDetails } from './types.js';
-import { parse } from 'semver';
 
 /**
  * Parse the package manager user agent string

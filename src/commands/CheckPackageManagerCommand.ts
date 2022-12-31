@@ -1,17 +1,18 @@
 import { satisfies } from 'semver';
 
+import type Application from '@src/Application.js';
+import { ExitCodes } from '@src/types.js';
+import type { PackageMangerDetails } from '@src/types.js';
 import {
   formatPackageMangerDetails,
   getConfiguredPackageManager,
   parsePackageManager,
   parsePackageManagerUserAgent,
 } from '@src/utils.js';
-import { CustomCommand } from './CustomCommand.js';
-import { ExitCodes } from '@src/types.js';
 
-import type Application from '@src/Application.js';
+import { CustomCommand } from './CustomCommand.js';
+
 import type { Command } from 'commander';
-import type { PackageMangerDetails } from '@src/types.js';
 
 export type CheckPackageManagerOptions = {
   info?: boolean;

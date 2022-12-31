@@ -1,10 +1,10 @@
 #!/usr/bin/env -S node --experimental-json-modules --no-warnings
 
+import { trimIndentation } from '@webdeveric/utils/trimIndentation';
 import { build } from 'esbuild';
 import { clean } from 'esbuild-plugin-clean';
 import { environmentPlugin } from 'esbuild-plugin-environment';
 import { nodeExternals } from 'esbuild-plugin-node-externals';
-import { trimIndentation } from '@webdeveric/utils/trimIndentation';
 
 import pkg from './package.json' assert { type: 'json' };
 
