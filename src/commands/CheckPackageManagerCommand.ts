@@ -26,7 +26,8 @@ export class CheckPackageManagerCommand extends CustomCommand {
       .description('Check that the correct package manager is being used.')
       .argument('[packageManager]', '<package manager name>[@<version>]', parsePackageManager)
       .option('--info', 'Print info messages', false)
-      .option('--debug', 'Print debug messages', false)
+      // GitHub actions will set this env var when runners have debug logging enabled.
+      .option('--debug', 'Print debug messages', process.env.RUNNER_DEBUG === '1')
       .action(this.action.bind(this));
 
     return command;
