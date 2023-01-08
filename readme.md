@@ -12,7 +12,7 @@ To configure the correct package manager, you can use the [`packageManager` prop
 npm i check-package-manager -D
 ```
 
-:information_source: You can use `npx --yes check-package-manager [options]` in your `preinstall` script if you don't want to add it as a dependency.
+:information_source: You can use `npx check-package-manager [options]` in your `preinstall` script if you don't want to add it as a dependency.
 
 ## Usage
 
@@ -42,7 +42,7 @@ When using [corepack](https://nodejs.org/api/corepack.html):
   "version": "1.0.0",
   "packageManager": "pnpm@7.19.0",
   "scripts": {
-    "preinstall": "npx --yes check-package-manager"
+    "preinstall": "npx check-package-manager"
   }
 }
 ```
@@ -54,7 +54,7 @@ Specify the package manager name and version yourself:
   "name": "YOUR-PACKAGE-NAME",
   "version": "1.0.0",
   "scripts": {
-    "preinstall": "npx --yes check-package-manager npm@9.2.0"
+    "preinstall": "npx check-package-manager npm@9.2.0"
   }
 }
 ```
@@ -66,7 +66,7 @@ Specify only the package manager name:
   "name": "YOUR-PACKAGE-NAME",
   "version": "1.0.0",
   "scripts": {
-    "preinstall": "npx --yes check-package-manager yarn"
+    "preinstall": "npx check-package-manager yarn"
   }
 }
 ```
