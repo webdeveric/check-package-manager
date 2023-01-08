@@ -58,19 +58,24 @@ export class CheckPackageManagerCommand extends CustomCommand {
         `Package manager environment variables:${npmEnv ? `\n${npmEnv}` : ' NONE'}`,
       );
 
-      if (typeof context.packageManagerArg === 'undefined') {
+      if (context.calledFromDependency) {
+        messages.push("Skipping package manager checks since 'check-package-manager' was called from a dependency.");
+      } else {
+        if (typeof context.packageManagerArg === 'undefined') {
+          messages.push(
+            'Trying to use "packageManager" property from your package.json to determine the configured package manager.',
+          );
+        }
+
         messages.push(
-          'Trying to use "packageManager" property from your package.json to determine the configured package manager.',
+          `Configured package manager ${formatPackageMangerDetails(context.configuredPackageManager)}`,
+          `Current package manager ${formatPackageMangerDetails(context.currentPackageManager)}`,
         );
       }
-
-      messages.push(
-        `Configured package manager ${formatPackageMangerDetails(context.configuredPackageManager)}`,
-        `Current package manager ${formatPackageMangerDetails(context.currentPackageManager)}`,
-      );
     }
 
-    if (typeof context.currentPackageManager === 'undefined') {
+    // npm_config_user_agent will not be parsed if it looks like the cli is being called from a dependency.
+    if (!context.calledFromDependency && typeof context.currentPackageManager === 'undefined') {
       messages.push(
         "You're doing it wrong. Call 'check-package-manager' from 'preinstall' script in your package.json file.",
       );
