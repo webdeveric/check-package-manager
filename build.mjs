@@ -15,6 +15,9 @@ try {
     platform: 'node',
     bundle: true,
     format: 'esm',
+    outExtension: {
+      '.js': '.mjs',
+    },
     target: `node${process.versions.node}`,
     minify: process.env.NODE_ENV === 'production',
     banner: {
