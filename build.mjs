@@ -39,12 +39,10 @@ try {
     ],
   });
 
-  if (results.warnings.length) {
-    console.warn(results.warnings);
-  }
+  const errors = [...results.warnings, ...results.errors];
 
-  if (results.errors.length) {
-    throw new AggregateError(results.errors, 'Build error');
+  if (errors.length) {
+    throw new AggregateError(errors, 'Build error and warnings');
   }
 } catch (error) {
   console.error(error);
