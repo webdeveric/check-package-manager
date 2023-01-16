@@ -13,7 +13,7 @@
   },
   "homepage": "https://github.com/webdeveric/check-package-manager/#readme",
   "bin": {
-    "check-package-manager": "./dist/cli.js"
+    "check-package-manager": "./dist/cli.mjs"
   },
   "files": [
     "dist"
@@ -23,14 +23,11 @@
   },
   "packageManager": "npm@9.2.0",
   "exports": {
-    ".": {
-      "import": "./dist/cli.js"
-    },
     "./package.json": "./package.json"
   },
   "scripts": {
     "predemo": "npm run build:dev",
-    "demo": "./dist/cli.js",
+    "demo": "./dist/cli.mjs",
     "format": "prettier --write .",
     "build": "NODE_ENV=production ./build.mjs",
     "build:dev": "NODE_ENV=development ./build.mjs",
@@ -65,29 +62,29 @@
   },
   "prettier": "@webdeveric/prettier-config",
   "dependencies": {
-    "@webdeveric/utils": "^0.25.0",
-    "commander": "^9.5.0",
+    "@webdeveric/utils": "^0.25.1",
+    "commander": "^10.0.0",
     "semver": "^7.3.8"
   },
   "devDependencies": {
     "@types/node": "^18.11.18",
     "@types/semver": "^7.3.13",
-    "@vitest/coverage-c8": "^0.26.2",
+    "@vitest/coverage-c8": "^0.27.1",
     "@webdeveric/eslint-config-ts": "^0.6.0",
     "@webdeveric/prettier-config": "^0.2.0",
     "cspell": "^6.18.0",
-    "esbuild": "^0.16.15",
+    "esbuild": "^0.17.0",
     "esbuild-plugin-clean": "^1.0.1",
     "esbuild-plugin-environment": "^0.2.1",
     "esbuild-plugin-node-externals": "^1.0.1",
     "eslint": "^8.30.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-import-resolver-typescript": "^3.5.2",
-    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-import": "2.26.0",
     "husky": "^8.0.2",
     "lint-staged": "^13.1.0",
     "prettier": "^2.8.2",
     "typescript": "^4.9.4",
-    "vitest": "^0.26.2"
+    "vitest": "^0.27.1"
   }
 }
