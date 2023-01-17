@@ -1,24 +1,39 @@
 #!/usr/bin/env node
-import { description, name, version } from 'check-package-manager/package.json';
+import { parseArgs } from 'node:util';
 
-import { CheckPackageManagerCommand } from '@commands/CheckPackageManagerCommand.js';
-
-import Application from './Application.js';
-import { assertSupportedNodeVersion } from './assertions.js';
+import { CheckPackageManager } from './CheckPackageManager.js';
+import { CliError } from './errors.js';
+import { ExitCodes } from './types.js';
 
 try {
-  assertSupportedNodeVersion(process.versions.node);
-
-  const app = new Application({
-    name: name,
-    description: description,
-    version: version,
-    commands: [new CheckPackageManagerCommand()],
+  const args = parseArgs({
+    allowPositionals: true,
+    tokens: true,
+    options: {
+      info: {
+        type: 'boolean',
+        short: 'i',
+        default: false,
+      },
+      debug: {
+        type: 'boolean',
+        short: 'd',
+        default: false,
+      },
+    },
   });
 
-  await app.parseAsync(process.argv);
-} catch (error) {
-  console.error(error);
+  const check = new CheckPackageManager(args.positionals.at(0), args.values);
 
-  process.exitCode ||= 1;
+  await check.run();
+} catch (error) {
+  if (error instanceof CliError) {
+    process.exitCode = error.code;
+  }
+
+  if (error instanceof Error) {
+    console.error(error.message);
+  }
+
+  process.exitCode ||= ExitCodes.DoingItWrong;
 }
