@@ -1,5 +1,7 @@
 import { satisfies } from 'semver';
 
+import { name, version } from 'check-package-manager/package.json';
+
 import type Application from '@src/Application.js';
 import { ExitCodes } from '@src/types.js';
 import type { PackageMangerDetails } from '@src/types.js';
@@ -53,6 +55,7 @@ export class CheckPackageManagerCommand extends CustomCommand {
         .join('\n');
 
       messages.push(
+        `${name} version ${version}`,
         `cwd: ${process.cwd()}`,
         `calledFromDependency: ${context.calledFromDependency}`,
         `Package manager environment variables:${npmEnv ? `\n${npmEnv}` : ' NONE'}`,
