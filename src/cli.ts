@@ -8,7 +8,6 @@ import { ExitCodes } from './types.js';
 try {
   const args = parseArgs({
     allowPositionals: true,
-    tokens: true,
     options: {
       info: {
         type: 'boolean',
