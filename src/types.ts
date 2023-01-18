@@ -1,6 +1,6 @@
 export enum ComparisonResults {
   Same,
-  Different,
+  DifferentName,
   DifferentVersion,
 }
 

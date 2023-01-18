@@ -38,7 +38,7 @@ describe('PackageMangerDetails', () => {
     const pnpm7 = new PackageMangerDetails('pnpm', '7.0.0');
 
     expect(npm8.compare(npm9)).toEqual(ComparisonResults.DifferentVersion);
-    expect(npm8.compare(pnpm7)).toEqual(ComparisonResults.Different);
+    expect(npm8.compare(pnpm7)).toEqual(ComparisonResults.DifferentName);
     expect(npm9.compare(npm9)).toEqual(ComparisonResults.Same);
   });
 });

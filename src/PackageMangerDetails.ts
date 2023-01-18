@@ -31,7 +31,7 @@ export class PackageMangerDetails {
   compare(details: PackageMangerDetails): ComparisonResults {
     if (this !== details) {
       if (this.name !== details.name) {
-        return ComparisonResults.Different;
+        return ComparisonResults.DifferentName;
       }
 
       if (typeof this.version === 'string' && this.version !== details.version) {
