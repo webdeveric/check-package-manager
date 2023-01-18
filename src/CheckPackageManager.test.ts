@@ -5,12 +5,7 @@ import { PassThrough } from 'node:stream';
 import { describe, it, expect, vi, afterEach, SpyInstance } from 'vitest';
 
 import { CheckPackageManager } from './CheckPackageManager.js';
-import {
-  DoingItWrong,
-  MisconfiguredPackageManager,
-  WrongPackageManager,
-  WrongPackageManagerVersion,
-} from './errors.js';
+import { CliError } from './CliError.js';
 
 vi.mock('node:fs/promises', () => ({
   readFile: vi.fn().mockImplementation(async () =>
@@ -49,7 +44,7 @@ describe('CheckPackageManager', () => {
 
       const cpm = new CheckPackageManager('npm@9.2.0', {}, noOpConsole);
 
-      await expect(() => cpm.run()).rejects.toBeInstanceOf(WrongPackageManager);
+      await expect(() => cpm.run()).rejects.toBeInstanceOf(CliError);
     });
 
     it('Throw when using wrong package manager version', async () => {
@@ -57,7 +52,7 @@ describe('CheckPackageManager', () => {
 
       const cpm = new CheckPackageManager('npm@9.2.0', {}, noOpConsole);
 
-      await expect(() => cpm.run()).rejects.toBeInstanceOf(WrongPackageManagerVersion);
+      await expect(() => cpm.run()).rejects.toBeInstanceOf(CliError);
     });
 
     it('Throw when using wrong package manager version', async () => {
@@ -65,7 +60,7 @@ describe('CheckPackageManager', () => {
 
       const cpm = new CheckPackageManager('npm@9.2.0', {}, noOpConsole);
 
-      await expect(() => cpm.run()).rejects.toBeInstanceOf(DoingItWrong);
+      await expect(() => cpm.run()).rejects.toBeInstanceOf(CliError);
     });
 
     it('Throws when misconfigured', async () => {
@@ -73,7 +68,7 @@ describe('CheckPackageManager', () => {
 
       const cpm = new CheckPackageManager(undefined, {}, noOpConsole);
 
-      await expect(() => cpm.run()).rejects.toBeInstanceOf(MisconfiguredPackageManager);
+      await expect(() => cpm.run()).rejects.toBeInstanceOf(CliError);
     });
   });
 

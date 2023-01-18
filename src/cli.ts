@@ -2,7 +2,7 @@
 import { parseArgs } from 'node:util';
 
 import { CheckPackageManager } from './CheckPackageManager.js';
-import { CliError } from './errors.js';
+import { CliError } from './CliError.js';
 import { ExitCodes } from './types.js';
 
 try {

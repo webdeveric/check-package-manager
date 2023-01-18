@@ -1,14 +1,9 @@
 import { Console } from 'node:console';
 
-import {
-  DoingItWrong,
-  MisconfiguredPackageManager,
-  WrongPackageManager,
-  WrongPackageManagerVersion,
-} from './errors.js';
+import { CliError } from './CliError.js';
 import { PackageMangerDetails } from './PackageMangerDetails.js';
-import { assertIsPackageManagerString, assertExhaustive } from './type-assertion.js';
-import { CheckPackageManagerOptions, ComparisonResults, type DeepNonNullable } from './types.js';
+import { assertIsPackageManagerString } from './type-assertion.js';
+import { CheckPackageManagerOptions, ComparisonResults, ExitCodes, type DeepNonNullable } from './types.js';
 import { getConfiguredPackageManager, isDependency, parsePackageManagerUserAgent } from './utils.js';
 
 export class CheckPackageManager {
@@ -67,7 +62,20 @@ export class CheckPackageManager {
   async run(): Promise<void> {
     const calledFromDependency = isDependency(process.cwd());
 
-    this.debug(`calledFromDependency: ${calledFromDependency}`);
+    if (this.options.debug) {
+      const npmEnv = Object.entries(process.env)
+        .filter(([name]) => name.startsWith('npm_'))
+        .sort((left, right) => left[0].localeCompare(right[0]))
+        .map(([key, value]) => `  ${key}: ${value}`)
+        .join('\n');
+
+      [
+        `cwd: ${process.cwd()}`,
+        `calledFromDependency: ${calledFromDependency}`,
+        `npm env vars:${npmEnv ? `\n${npmEnv}` : ' NONE'}`,
+        `Package manager argument: ${this.packageManagerArg}`,
+      ].forEach(message => this.debug(message));
+    }
 
     if (calledFromDependency) {
       this.info("Skipping package manager checks since 'check-package-manager' was called from a dependency.");
@@ -81,57 +89,45 @@ export class CheckPackageManager {
       ? PackageMangerDetails.create(currentPackageManagerString)
       : undefined;
 
-    const requiredPackageManager = await this.getRequiredPackageManager();
-
-    if (this.options.debug) {
-      const npmEnv = Object.entries(process.env)
-        .filter(([name]) => name.startsWith('npm_'))
-        .sort((left, right) => left[0].localeCompare(right[0]))
-        .map(([key, value]) => `  ${key}: ${value}`)
-        .join('\n');
-
-      [
-        `cwd: ${process.cwd()}`,
-        `npm env vars:${npmEnv ? `\n${npmEnv}` : ' NONE'}`,
-        `Current package manager: ${currentPackageManagerString}`,
-        `Package manager argument: ${this.packageManagerArg}`,
-        `Required package manager: ${requiredPackageManager}`,
-      ].forEach(message => this.debug(message));
-    }
+    this.debug(`Current package manager: ${currentPackageManager}`);
 
     if (!currentPackageManager) {
-      throw new DoingItWrong(
+      throw new CliError(
         "You're doing it wrong. Call 'check-package-manager' from 'preinstall' script in your package.json file.",
+        ExitCodes.DoingItWrong,
       );
     }
+
+    const requiredPackageManager = await this.getRequiredPackageManager();
+
+    this.debug(`Required package manager: ${requiredPackageManager}`);
 
     if (!requiredPackageManager) {
       this.info(
         'Trying to use "packageManager" property from your package.json to determine the configured package manager.',
       );
 
-      throw new MisconfiguredPackageManager('The required package manager was not configured correctly.');
+      throw new CliError(
+        'The required package manager was not configured correctly.',
+        ExitCodes.MisconfiguredPackageManager,
+      );
     }
 
     const comparison = requiredPackageManager.compare(currentPackageManager);
 
-    switch (comparison) {
-      case ComparisonResults.Same:
-        this.info(`${process.env.npm_package_name} is using the correct package manager.`);
-
-        break;
-      case ComparisonResults.Different:
+    if (comparison === ComparisonResults.Same) {
+      this.info(`${process.env.npm_package_name} is using the correct package manager.`);
+    } else {
+      if (!this.packageManagerArg) {
         this.info(`Try running "corepack enable" then "${requiredPackageManager.name} install"`);
+      }
 
-        throw new WrongPackageManager(
-          `${process.env.npm_package_name} should be using ${requiredPackageManager} instead of ${currentPackageManagerString}`,
-        );
-      case ComparisonResults.DifferentVersion:
-        throw new WrongPackageManagerVersion(
-          `${process.env.npm_package_name} should be using ${requiredPackageManager} instead of ${currentPackageManagerString}`,
-        );
-      default:
-        assertExhaustive(comparison);
+      throw new CliError(
+        `${process.env.npm_package_name} should be using ${requiredPackageManager} instead of ${currentPackageManagerString}`,
+        comparison === ComparisonResults.DifferentName
+          ? ExitCodes.WrongPackageManager
+          : ExitCodes.WrongPackageManagerVersion,
+      );
     }
   }
 }
