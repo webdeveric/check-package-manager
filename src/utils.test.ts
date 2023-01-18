@@ -1,11 +1,33 @@
-import { describe, expect, it } from 'vitest';
+import { readFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
+
+import { describe, expect, it, vi, SpyInstance } from 'vitest';
 
 import {
-  convertToSemVer,
-  formatPackageMangerDetails,
-  parsePackageManager,
+  getConfiguredPackageManager,
+  getJson,
+  getPackageJson,
+  getPackageJsonPath,
+  getPackageManagerFromPackageJson,
+  isDependency,
   parsePackageManagerUserAgent,
 } from './utils.js';
+
+vi.mock('node:fs/promises', () => ({
+  readFile: vi.fn().mockImplementation(async () =>
+    JSON.stringify({
+      name: 'check-package-manager',
+      packageManager: 'npm@9.2.0',
+    }),
+  ),
+}));
+
+describe('isDependency()', () => {
+  it('Returns true if the path looks like a dependency', () => {
+    expect(isDependency('/some/path/repo/')).toBeFalsy();
+    expect(isDependency('/some/path/repo/node_modules/some-package/')).toBeTruthy();
+  });
+});
 
 describe('parsePackageManagerUserAgent()', () => {
   it('Returns undefined when given an unknown user agent', () => {
@@ -13,79 +35,87 @@ describe('parsePackageManagerUserAgent()', () => {
   });
 
   it('Returns PackageMangerDetails', () => {
-    expect(parsePackageManagerUserAgent('npm/8.5.5 node/v16.15.0 linux x64 workspaces/false')).toEqual({
-      name: 'npm',
-      version: '8.5.5',
-    });
+    expect(parsePackageManagerUserAgent('npm/8.5.5 node/v16.15.0 linux x64 workspaces/false')).toEqual('npm@8.5.5');
 
-    expect(parsePackageManagerUserAgent('yarn/1.22.15 npm/? node/v16.15.0 linux x64')).toEqual({
-      name: 'yarn',
-      version: '1.22.15',
-    });
+    expect(parsePackageManagerUserAgent('yarn/1.22.15 npm/? node/v16.15.0 linux x64')).toEqual('yarn@1.22.15');
 
-    expect(parsePackageManagerUserAgent('pnpm/7.19.0 npm/? node/v16.15.0 linux x64')).toEqual({
-      name: 'pnpm',
-      version: '7.19.0',
-    });
+    expect(parsePackageManagerUserAgent('pnpm/7.19.0 npm/? node/v16.15.0 linux x64')).toEqual('pnpm@7.19.0');
   });
 
   it('Can identify cnpm', () => {
-    expect(parsePackageManagerUserAgent('npminstall/6.6.2 npm/? node/v16.15.0 linux x64')).toEqual({
-      name: 'cnpm',
-      version: '6.6.2',
-    });
+    expect(parsePackageManagerUserAgent('npminstall/6.6.2 npm/? node/v16.15.0 linux x64')).toEqual('cnpm@6.6.2');
   });
 });
 
-describe('parsePackageManager()', () => {
-  it('Parses the "packageManager" field from a package.json file', () => {
-    expect(parsePackageManager('pnpm@7.20.0')).toEqual({
-      name: 'pnpm',
-      version: '7.20.0',
-    });
-  });
+describe('getJson()', () => {
+  it('Returns parsed JSON data from a file', async () => {
+    const packageJson = resolve(__dirname, '../package.json');
 
-  it('Version is optional', () => {
-    expect(parsePackageManager('pnpm')).toEqual({
-      name: 'pnpm',
-      version: undefined,
-    });
-
-    expect(parsePackageManager('pnpm@')).toEqual({
-      name: 'pnpm',
-      version: undefined,
-    });
-  });
-
-  it('Invalid values return undefined', () => {
-    expect(parsePackageManager('')).toBeUndefined();
-  });
-});
-
-describe('formatPackageMangerDetails()', () => {
-  it('Returns a string when given PackageMangerDetails', () => {
-    expect(
-      formatPackageMangerDetails({
-        name: 'npm',
-        version: '9.0.0',
+    await expect(getJson(packageJson)).resolves.toEqual(
+      expect.objectContaining({
+        name: 'check-package-manager',
       }),
-    ).toBe('npm@9.0.0');
+    );
   });
 });
 
-describe('convertToSemVer()', () => {
-  it('Converts input into valid semver', () => {
-    expect(convertToSemVer('1')).toBe('1.0.0');
-    expect(convertToSemVer('1.2')).toBe('1.2.0');
-    expect(convertToSemVer('1.2.3')).toBe('1.2.3');
-    expect(convertToSemVer('1.0.0-alpha.1')).toBe('1.0.0-alpha.1');
-    expect(convertToSemVer('1.0.0+meta')).toBe('1.0.0+meta');
-    expect(convertToSemVer('1.0.0-beta.2+meta')).toBe('1.0.0-beta.2+meta');
-    expect(convertToSemVer('1-beta.2+meta')).toBe('1.0.0-beta.2+meta');
+describe('getPackageJsonPath()', () => {
+  describe('Returns the path to package.json file', () => {
+    it('Looks in the env first', () => {
+      vi.stubEnv('npm_package_json', '/tmp/package.json');
+
+      expect(getPackageJsonPath()).toEqual('/tmp/package.json');
+    });
+
+    it('Looks in the cwd', () => {
+      vi.stubEnv('npm_package_json', '');
+
+      const spy = vi.spyOn(process, 'cwd');
+
+      spy.mockReturnValue('/tmp/cwd');
+
+      expect(getPackageJsonPath()).toEqual('/tmp/cwd/package.json');
+      expect(spy).toHaveBeenCalledOnce();
+
+      spy.mockRestore();
+    });
+  });
+});
+
+describe('getPackageJson()', () => {
+  it('Gets the JSON data from package.json', async () => {
+    await expect(getPackageJson()).resolves.toEqual(
+      expect.objectContaining({
+        name: 'check-package-manager',
+      }),
+    );
+  });
+});
+
+describe('getPackageManagerFromPackageJson()', () => {
+  it('Gets the JSON data from package.json', async () => {
+    await expect(getPackageManagerFromPackageJson()).resolves.toBeTypeOf('string');
+  });
+});
+
+describe('getConfiguredPackageManager()', () => {
+  it('Looks in the env first', async () => {
+    vi.stubEnv('npm_package_packageManager', 'npm@9.2.0');
+
+    await expect(getConfiguredPackageManager()).resolves.toEqual('npm@9.2.0');
   });
 
-  it('Empty string is 0.0.0', () => {
-    expect(convertToSemVer('')).toBe('0.0.0');
-    expect(convertToSemVer(undefined)).toBe('0.0.0');
+  it('Looks for the packageManager property', async () => {
+    vi.stubEnv('npm_package_packageManager', '');
+
+    await expect(getConfiguredPackageManager()).resolves.toEqual('npm@9.2.0');
+  });
+
+  it('Returns undefined when unable to find packageManager', async () => {
+    vi.stubEnv('npm_package_packageManager', '');
+
+    (readFile as unknown as SpyInstance).mockImplementationOnce(async () => JSON.stringify({ name: 'name' }));
+
+    await expect(getConfiguredPackageManager()).resolves.toBeUndefined();
   });
 });

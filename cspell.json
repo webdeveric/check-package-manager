@@ -12,11 +12,13 @@
     "nvmrc",
     "outdir",
     "pnpm",
+    "positionals",
     "postbuild",
     "predemo",
     "preinstall",
     "reporter",
     "typecheck",
+    "unstub",
     "webdeveric"
   ],
   "ignorePaths": ["node_modules/**", ".vscode/*.json"],
