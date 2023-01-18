@@ -6,6 +6,8 @@ Check that the correct package manager is being used with your project.
 
 To configure the correct package manager, you can use the [`packageManager` property](https://nodejs.org/api/packages.html#packagemanager) in your `package.json` file or you can specify it in the cli arguments.
 
+:information_source: This package requires **Node >= `16.17`**
+
 ## Install
 
 ```shell
