@@ -23,10 +23,11 @@ try {
     banner: {
       js: trimIndentation(`
         /*!
-         * @file ${pkg.name} | ${pkg.description}
+         * @file ${pkg.name}
          * @version ${pkg.version}
-         * @author ${pkg.author.name} <${pkg.author.email}>
          * @license ${pkg.license}
+         * @copyright ${pkg.author.name} ${new Date().getFullYear()}
+         * @see {@link ${pkg.homepage}}
          */
       `),
     },
