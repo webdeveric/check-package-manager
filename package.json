@@ -26,7 +26,7 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "predemo": "npm run build:dev",
+    "//predemo": "npm run build:dev",
     "demo": "./dist/cli.mjs",
     "format": "prettier --write .",
     "build": "NODE_ENV=production ./build.mjs",
@@ -64,12 +64,12 @@
   "devDependencies": {
     "@types/node": "^18.11.18",
     "@types/semver": "^7.3.13",
-    "@vitest/coverage-c8": "^0.27.1",
+    "@vitest/coverage-c8": "^0.28.1",
     "@webdeveric/eslint-config-ts": "^0.6.0",
     "@webdeveric/prettier-config": "^0.2.0",
-    "@webdeveric/utils": "^0.25.1",
+    "@webdeveric/utils": "^0.26.0",
     "cspell": "^6.18.0",
-    "esbuild": "^0.17.0",
+    "esbuild": "^0.17.4",
     "esbuild-plugin-clean": "^1.0.1",
     "esbuild-plugin-environment": "^0.2.1",
     "esbuild-plugin-node-externals": "^1.0.1",
@@ -81,6 +81,6 @@
     "lint-staged": "^13.1.0",
     "prettier": "^2.8.2",
     "typescript": "^4.9.4",
-    "vitest": "^0.27.1"
+    "vitest": "^0.28.1"
   }
 }
