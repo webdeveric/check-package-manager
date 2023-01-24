@@ -30,13 +30,9 @@ try {
     console.warn('util.parseArgs is not a function. Please use Node JS >= 16.17');
   }
 } catch (error) {
-  if (error instanceof CliError) {
-    process.exitCode = error.code;
-  }
-
   if (error instanceof Error) {
     console.error(error.message);
   }
 
-  process.exitCode ||= ExitCodes.DoingItWrong;
+  process.exitCode = error instanceof CliError ? error.code : ExitCodes.DoingItWrong;
 }
