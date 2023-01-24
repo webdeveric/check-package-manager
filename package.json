@@ -1,6 +1,6 @@
 {
   "name": "check-package-manager",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "Check that you're using the correct package manager",
   "type": "module",
   "license": "MIT",
