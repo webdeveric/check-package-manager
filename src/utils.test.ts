@@ -1,5 +1,5 @@
 import { readFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { resolve, sep } from 'node:path';
 
 import { describe, expect, it, vi, SpyInstance } from 'vitest';
 
@@ -75,7 +75,7 @@ describe('getPackageJsonPath()', () => {
 
       spy.mockReturnValue('/tmp/cwd');
 
-      expect(getPackageJsonPath()).toEqual('/tmp/cwd/package.json');
+      expect(getPackageJsonPath()).toEqual(`${sep}tmp${sep}cwd${sep}package.json`);
       expect(spy).toHaveBeenCalledOnce();
 
       spy.mockRestore();
