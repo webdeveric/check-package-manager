@@ -10,9 +10,32 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  ci:
-    name: Continuous Integration
+  ci-linux:
+    name: Continuous Integration Linux
     runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+      - name: Install npm
+        run: npm install -g npm@9.2.0
+      - name: Installing dependencies
+        run: npm install
+      - name: Linting
+        run: npm run lint
+      - name: Type checking
+        run: npm run typecheck
+      - name: Testing
+        run: npm run coverage
+      - name: Building
+        run: npm run build
+
+  ci-windows:
+    name: Continuous Integration Windows
+    runs-on: windows-2022
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js
