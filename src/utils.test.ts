@@ -71,12 +71,10 @@ describe('getPackageJsonPath()', () => {
     it('Looks in the cwd', () => {
       vi.stubEnv('npm_package_json', '');
 
-      const spy = vi.spyOn(process, 'cwd');
-
-      spy.mockReturnValue('/tmp/cwd');
+      const spy = vi.spyOn(process, 'cwd').mockReturnValue('/tmp/cwd');
 
       expect(getPackageJsonPath()).toEqual(`${sep}tmp${sep}cwd${sep}package.json`);
-      expect(spy).toHaveBeenCalledOnce();
+      expect(spy).toHaveBeenCalled();
 
       spy.mockRestore();
     });

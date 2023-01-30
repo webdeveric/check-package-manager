@@ -100,4 +100,28 @@ describe('CheckPackageManager', () => {
       expect(debugSpy).toHaveBeenCalled();
     });
   });
+
+  describe('Auto debug mode', () => {
+    describe('Supports GitHub Actions RUNNER_DEBUG env variable', () => {
+      it('RUNNER_DEBUG must equal "1" to enable debug mode', () => {
+        vi.stubEnv('RUNNER_DEBUG', '');
+
+        expect(new CheckPackageManager().options.debug).toBeFalsy();
+
+        vi.stubEnv('RUNNER_DEBUG', '1');
+
+        expect(new CheckPackageManager().options.debug).toBeTruthy();
+      });
+
+      it('Options passed in constructor take priority', () => {
+        vi.stubEnv('RUNNER_DEBUG', '1');
+
+        expect(
+          new CheckPackageManager(undefined, {
+            debug: false,
+          }).options.debug,
+        ).toBeFalsy();
+      });
+    });
+  });
 });
