@@ -6,7 +6,7 @@ import { isPackageManagerName, isPackageManagerString, isVersionString } from '.
 
 import type { PackageManagerString } from './types.js';
 
-export const isDependency = (cwd: string): boolean => /\/(node_modules|_cacache)\/.+/.test(cwd);
+export const isDependency = (cwd: string): boolean => /([/\\])(node_modules|_cacache)\1/.test(cwd);
 
 /**
  * Parse the package manager user agent string

@@ -26,6 +26,7 @@ describe('isDependency()', () => {
   it('Returns true if the path looks like a dependency', () => {
     expect(isDependency('/some/path/repo/')).toBeFalsy();
     expect(isDependency('/some/path/repo/node_modules/some-package/')).toBeTruthy();
+    expect(isDependency('D:\\some\\path\\repo\\node_modules\\some-package')).toBeTruthy();
   });
 });
 
