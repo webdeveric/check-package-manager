@@ -5,6 +5,7 @@
     "cnpm",
     "corepack",
     "downlevel",
+    "env",
     "esbuild",
     "esnext",
     "lcov",

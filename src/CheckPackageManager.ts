@@ -22,7 +22,8 @@ export class CheckPackageManager {
 
     this.options = {
       info: options.info ?? false,
-      debug: options.debug ?? false,
+      // GitHub actions will set this env var when runners have debug logging enabled.
+      debug: options.debug ?? process.env.RUNNER_DEBUG === '1',
     };
 
     this.console = console;
