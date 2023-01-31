@@ -81,7 +81,7 @@ describe('CheckPackageManager', () => {
     it('info', async () => {
       vi.stubEnv('npm_config_user_agent', 'npm/8.5.5 node/v16.15.0 linux x64 workspaces/false');
 
-      const cpm = new CheckPackageManager('npm@8.5.5', { info: true }, noOpConsole);
+      const cpm = new CheckPackageManager('npm@8.5.5', { info: true, debug: false }, noOpConsole);
 
       await expect(() => cpm.run()).not.toThrow();
 
@@ -92,7 +92,7 @@ describe('CheckPackageManager', () => {
     it('debug', async () => {
       vi.stubEnv('npm_config_user_agent', 'npm/8.5.5 node/v16.15.0 linux x64 workspaces/false');
 
-      const cpm = new CheckPackageManager('npm@8.5.5', { debug: true }, noOpConsole);
+      const cpm = new CheckPackageManager('npm@8.5.5', { info: false, debug: true }, noOpConsole);
 
       await expect(() => cpm.run()).not.toThrow();
 
