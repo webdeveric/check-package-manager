@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2021",
-    "module": "esnext",
+    "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "lib": ["DOM", "es2021", "ES2022.Object"],
     "resolveJsonModule": true,
@@ -19,7 +19,7 @@
     "allowUnreachableCode": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "importsNotUsedAsValues": "error",
+    "verbatimModuleSyntax": true,
     "noErrorTruncation": true,
     "exactOptionalPropertyTypes": true,
     "noImplicitOverride": true,
