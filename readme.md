@@ -6,7 +6,7 @@ Check that the correct package manager is being used with your project.
 
 To configure the correct package manager, you can use the [`packageManager` property](https://nodejs.org/api/packages.html#packagemanager) in your `package.json` file or you can specify it in the cli arguments.
 
-:information_source: This package requires **Node >= `16.17`**. If you use an older Node version, the cli will exit and print a warning.
+:information_source: This package requires **Node >= `18`**. If you use an older Node version, the cli will exit and print a warning.
 
 ## Install
 
