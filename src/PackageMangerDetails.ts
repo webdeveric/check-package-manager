@@ -1,7 +1,7 @@
 import assert from 'node:assert';
 
 import { isVersionString } from './type-predicate.js';
-import { VersionString, PackageManagerString, ComparisonResults } from './types.js';
+import { type VersionString, type PackageManagerString, ComparisonResults } from './types.js';
 
 export class PackageMangerDetails {
   public readonly name: string;

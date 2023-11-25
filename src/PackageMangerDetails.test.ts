@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 
 import { PackageMangerDetails } from './PackageMangerDetails.js';
-import { ComparisonResults, PackageManagerString } from './types.js';
+import { ComparisonResults, type PackageManagerString } from './types.js';
 
 describe('PackageMangerDetails', () => {
   it('Represents a version of a package manager', () => {

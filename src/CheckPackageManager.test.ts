@@ -2,7 +2,7 @@ import { Console } from 'node:console';
 import { readFile } from 'node:fs/promises';
 import { PassThrough } from 'node:stream';
 
-import { describe, it, expect, vi, afterEach, SpyInstance } from 'vitest';
+import { describe, it, expect, vi, afterEach, type SpyInstance } from 'vitest';
 
 import { CheckPackageManager } from './CheckPackageManager.js';
 import { CliError } from './CliError.js';

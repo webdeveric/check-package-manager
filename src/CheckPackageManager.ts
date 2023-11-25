@@ -3,7 +3,7 @@ import { Console } from 'node:console';
 import { CliError } from './CliError.js';
 import { PackageMangerDetails } from './PackageMangerDetails.js';
 import { assertIsPackageManagerString } from './type-assertion.js';
-import { CheckPackageManagerOptions, ComparisonResults, ExitCodes, type DeepNonNullable } from './types.js';
+import { type CheckPackageManagerOptions, ComparisonResults, ExitCodes, type DeepNonNullable } from './types.js';
 import { getConfiguredPackageManager, isDependency, parsePackageManagerUserAgent } from './utils.js';
 
 export class CheckPackageManager {

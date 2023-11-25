@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { resolve, sep } from 'node:path';
 
-import { describe, expect, it, vi, SpyInstance } from 'vitest';
+import { describe, expect, it, vi, type SpyInstance } from 'vitest';
 
 import {
   getConfiguredPackageManager,
