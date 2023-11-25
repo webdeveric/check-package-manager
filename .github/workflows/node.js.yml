@@ -1,55 +1,34 @@
-# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-
 name: Node.js CI
 
 on: [push]
 
 concurrency:
-  group: ci-${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  ci-linux:
-    name: Continuous Integration Linux
-    runs-on: ubuntu-22.04
+  ci:
+    name: Continuous Integration
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-22.04, windows-2022]
+    runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
-          cache: 'npm'
-      - name: Install npm
-        run: npm install -g npm@9.2.0
+          cache: 'pnpm'
       - name: Installing dependencies
-        run: npm install
+        run: pnpm install
       - name: Linting
-        run: npm run lint
+        run: pnpm lint
       - name: Type checking
-        run: npm run typecheck
+        run: pnpm typecheck
       - name: Testing
-        run: npm run coverage
+        run: pnpm coverage
       - name: Building
-        run: npm run build
-
-  ci-windows:
-    name: Continuous Integration Windows
-    runs-on: windows-2022
-    steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
-      - name: Install npm
-        run: npm install -g npm@9.2.0
-      - name: Installing dependencies
-        run: npm install
-      - name: Linting
-        run: npm run lint
-      - name: Type checking
-        run: npm run typecheck
-      - name: Testing
-        run: npm run coverage
+        run: pnpm build
