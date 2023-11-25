@@ -73,8 +73,8 @@ export class CheckPackageManager {
       [
         `cwd: ${process.cwd()}`,
         `calledFromDependency: ${calledFromDependency}`,
-        `npm env vars:${npmEnv ? `\n${npmEnv}` : ' NONE'}`,
         `Package manager argument: ${this.packageManagerArg}`,
+        `process.env.npm_* variables:${npmEnv ? `\n${npmEnv}` : ' NONE'}`,
       ].forEach(message => this.debug(message));
     }
 

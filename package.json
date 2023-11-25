@@ -19,24 +19,24 @@
     "dist"
   ],
   "engines": {
-    "node": ">=16.17"
+    "node": ">=18"
   },
-  "packageManager": "npm@9.2.0",
+  "packageManager": "pnpm@8.11.0",
   "exports": {
     "./package.json": "./package.json"
   },
   "scripts": {
-    "//predemo": "npm run build:dev",
+    "//predemo": "pnpm build:dev",
     "demo": "./dist/cli.mjs",
     "format": "prettier --write .",
-    "build": "NODE_ENV=production ./build.mjs",
-    "build:dev": "NODE_ENV=development ./build.mjs",
+    "build": "cross-env NODE_ENV=production node --experimental-json-modules --no-warnings ./build.mjs",
+    "build:dev": "cross-env NODE_ENV=development node --experimental-json-modules --no-warnings ./build.mjs",
     "typecheck": "tsc --noEmit && tsc -p ./tsconfig.project-files.json",
     "spellcheck": "cspell --no-progress \"./src/**/*.{ts,js,json}\" \"./*.{md,js,mjs,mts}\" \"./LICENSE\" \"./package.json\"",
     "lint": "eslint ./src ./*.{mjs,mts} --fix",
     "test": "vitest -c vitest.config.mts",
     "coverage": "vitest run  -c vitest.config.mts --coverage",
-    "prepublishOnly": "npm run typecheck && npm run spellcheck && npm run lint && npm run coverage && npm run build",
+    "prepublishOnly": "pnpm typecheck && pnpm spellcheck && pnpm lint && pnpm coverage && pnpm build",
     "prepare": "husky install"
   },
   "keywords": [
@@ -62,22 +62,23 @@
   },
   "prettier": "@webdeveric/prettier-config",
   "devDependencies": {
-    "@types/node": "^18.11.18",
-    "@types/semver": "^7.3.13",
+    "@types/node": "^18.18.13",
+    "@types/semver": "^7.5.6",
     "@vitest/coverage-v8": "^0.34.6",
     "@webdeveric/eslint-config-ts": "^0.7.1",
     "@webdeveric/prettier-config": "^0.2.0",
     "@webdeveric/utils": "^0.29.1",
+    "cross-env": "^7.0.3",
     "cspell": "^8.0.0",
     "esbuild": "^0.19.7",
     "esbuild-plugin-clean": "^1.0.1",
     "esbuild-plugin-environment": "^0.3.0",
     "esbuild-plugin-node-externals": "^1.0.1",
-    "eslint": "^8.30.0",
+    "eslint": "^8.54.0",
     "eslint-config-prettier": "^9.0.0",
-    "eslint-import-resolver-typescript": "^3.5.2",
-    "eslint-plugin-import": "^2.27.5",
-    "husky": "^8.0.2",
+    "eslint-import-resolver-typescript": "^3.6.1",
+    "eslint-plugin-import": "^2.29.0",
+    "husky": "^8.0.3",
     "lint-staged": "^15.1.0",
     "prettier": "^3.1.0",
     "typescript": "^5.3.2",
