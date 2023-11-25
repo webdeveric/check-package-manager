@@ -76,8 +76,8 @@ Specify only the package manager name:
 ## Local development
 
 ```
-nvm use
+fnm use
 corepack enable
-npm ci
-npm run build
+pnpm install
+pnpm build
 ```
