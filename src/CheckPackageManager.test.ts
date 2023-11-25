@@ -64,11 +64,13 @@ describe('CheckPackageManager', () => {
     });
 
     it('Throws when misconfigured', async () => {
+      vi.stubEnv('npm_package_packageManager', '');
+
       (readFile as unknown as SpyInstance).mockImplementationOnce(async () => JSON.stringify({ name: 'name' }));
 
       const cpm = new CheckPackageManager(undefined, {}, noOpConsole);
 
-      await expect(() => cpm.run()).rejects.toBeInstanceOf(CliError);
+      await expect(cpm.run()).rejects.toBeInstanceOf(CliError);
     });
   });
 
