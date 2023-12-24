@@ -21,6 +21,9 @@ describe('isPackageManagerString()', () => {
     expect(isPackageManagerString('npm')).toBeTruthy();
     expect(isPackageManagerString('npm@')).toBeTruthy();
     expect(isPackageManagerString('npm@1.2.3')).toBeTruthy();
+    expect(
+      isPackageManagerString('pnpm@8.13.0+sha256.fbcf256db6d06bc189e31df34b3ed61220f3ba9f78a2ca8fe7be0fce4670dbd3'),
+    ).toBeTruthy();
     expect(isPackageManagerString('not a version string')).toBeFalsy();
   });
 });
