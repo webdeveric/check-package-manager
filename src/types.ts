@@ -25,8 +25,10 @@ export type DeepNonNullable<T> = T extends Record<PropertyKey, unknown>
 
 export type PackageManagerName = 'npm' | 'cnpm' | 'pnpm' | 'yarn';
 
-export type VersionExtension = `${'-' | '+'}${string}`;
+export type VersionExtension = `-${string}`;
 
-export type VersionString = `${number}.${number}.${number}${'' | VersionExtension}`;
+export type BuildMetaData = `+${string}`;
+
+export type VersionString = `${number}.${number}.${number}${'' | VersionExtension}${'' | BuildMetaData}`;
 
 export type PackageManagerString = PackageManagerName | `${PackageManagerName}@${VersionString}`;

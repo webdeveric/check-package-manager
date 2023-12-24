@@ -36,7 +36,7 @@ export class CheckPackageManager {
     if (this.packageManagerArg) {
       assertIsPackageManagerString(this.packageManagerArg);
 
-      return PackageMangerDetails.create(this.packageManagerArg);
+      return new PackageMangerDetails(this.packageManagerArg);
     }
 
     this.info(
@@ -45,7 +45,7 @@ export class CheckPackageManager {
 
     const configuredPackageManager = await getConfiguredPackageManager();
 
-    return configuredPackageManager ? PackageMangerDetails.create(configuredPackageManager) : undefined;
+    return configuredPackageManager ? new PackageMangerDetails(configuredPackageManager) : undefined;
   }
 
   info(...args: Parameters<Console['info']>): void {
@@ -87,7 +87,7 @@ export class CheckPackageManager {
     const currentPackageManagerString = parsePackageManagerUserAgent(process.env.npm_config_user_agent);
 
     const currentPackageManager = currentPackageManagerString
-      ? PackageMangerDetails.create(currentPackageManagerString)
+      ? new PackageMangerDetails(currentPackageManagerString)
       : undefined;
 
     this.debug(`Current package manager: ${currentPackageManager}`);
