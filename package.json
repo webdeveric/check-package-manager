@@ -62,15 +62,15 @@
   },
   "prettier": "@webdeveric/prettier-config",
   "devDependencies": {
-    "@types/node": "^18.19.3",
+    "@types/node": "^18.19.6",
     "@types/semver": "^7.5.6",
-    "@vitest/coverage-v8": "^1.1.0",
+    "@vitest/coverage-v8": "^1.2.0",
     "@webdeveric/eslint-config-ts": "^0.7.1",
     "@webdeveric/prettier-config": "^0.2.0",
     "@webdeveric/utils": "^0.29.1",
     "cross-env": "^7.0.3",
-    "cspell": "^8.2.3",
-    "esbuild": "^0.19.10",
+    "cspell": "^8.3.2",
+    "esbuild": "^0.19.11",
     "esbuild-plugin-clean": "^1.0.1",
     "esbuild-plugin-environment": "^0.3.0",
     "esbuild-plugin-node-externals": "^1.0.1",
@@ -80,8 +80,8 @@
     "eslint-plugin-import": "^2.29.1",
     "husky": "^8.0.3",
     "lint-staged": "^15.2.0",
-    "prettier": "^3.1.1",
+    "prettier": "^3.2.1",
     "typescript": "^5.3.3",
-    "vitest": "^1.1.0"
+    "vitest": "^1.2.0"
   }
 }
