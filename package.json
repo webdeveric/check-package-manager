@@ -37,7 +37,7 @@
     "test": "vitest -c vitest.config.mts",
     "coverage": "vitest run  -c vitest.config.mts --coverage",
     "prepublishOnly": "pnpm typecheck && pnpm spellcheck && pnpm lint && pnpm coverage && pnpm build",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "keywords": [
     "package",
@@ -62,15 +62,15 @@
   },
   "prettier": "@webdeveric/prettier-config",
   "devDependencies": {
-    "@types/node": "^18.19.6",
+    "@types/node": "^18.19.14",
     "@types/semver": "^7.5.6",
-    "@vitest/coverage-v8": "^1.2.0",
+    "@vitest/coverage-v8": "^1.2.2",
     "@webdeveric/eslint-config-ts": "^0.7.1",
     "@webdeveric/prettier-config": "^0.2.0",
     "@webdeveric/utils": "^0.29.1",
     "cross-env": "^7.0.3",
     "cspell": "^8.3.2",
-    "esbuild": "^0.19.11",
+    "esbuild": "^0.20.0",
     "esbuild-plugin-clean": "^1.0.1",
     "esbuild-plugin-environment": "^0.3.0",
     "esbuild-plugin-node-externals": "^1.0.1",
@@ -78,10 +78,10 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.29.1",
-    "husky": "^8.0.3",
-    "lint-staged": "^15.2.0",
-    "prettier": "^3.2.1",
+    "husky": "^9.0.10",
+    "lint-staged": "^15.2.2",
+    "prettier": "^3.2.5",
     "typescript": "^5.3.3",
-    "vitest": "^1.2.0"
+    "vitest": "^1.2.2"
   }
 }
