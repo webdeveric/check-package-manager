@@ -1,6 +1,6 @@
 #!/usr/bin/env -S node --experimental-json-modules --no-warnings
 
-import { trimIndentation } from '@webdeveric/utils/trimIndentation';
+import { comment } from '@webdeveric/utils/comment';
 import { build } from 'esbuild';
 import { clean } from 'esbuild-plugin-clean';
 import { environmentPlugin } from 'esbuild-plugin-environment';
@@ -21,15 +21,18 @@ try {
     target: `node${process.versions.node}`,
     minify: process.env.NODE_ENV === 'production',
     banner: {
-      js: trimIndentation(`
-        /*!
-         * @file ${pkg.name}
-         * @version ${pkg.version}
-         * @license ${pkg.license}
-         * @copyright ${pkg.author.name} ${new Date().getFullYear()}
-         * @see {@link ${pkg.homepage}}
-         */
-      `),
+      js: comment(
+        `
+          @file ${pkg.name}
+          @version ${pkg.version}
+          @license ${pkg.license}
+          @copyright ${pkg.author.name} ${new Date().getFullYear()}
+          @see {@link ${pkg.homepage}}
+        `,
+        {
+          type: 'legal',
+        },
+      ),
     },
     plugins: [
       clean({
