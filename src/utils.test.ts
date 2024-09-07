@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { resolve, sep } from 'node:path';
 
-import { describe, expect, it, vi, type SpyInstance } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import {
   getConfiguredPackageManager,
@@ -113,7 +113,7 @@ describe('getConfiguredPackageManager()', () => {
   it('Returns undefined when unable to find packageManager', async () => {
     vi.stubEnv('npm_package_packageManager', '');
 
-    (readFile as unknown as SpyInstance).mockImplementationOnce(async () => JSON.stringify({ name: 'name' }));
+    vi.mocked(readFile).mockImplementationOnce(async () => JSON.stringify({ name: 'name' }));
 
     await expect(getConfiguredPackageManager()).resolves.toBeUndefined();
   });

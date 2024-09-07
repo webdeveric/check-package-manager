@@ -2,7 +2,7 @@ import { Console } from 'node:console';
 import { readFile } from 'node:fs/promises';
 import { PassThrough } from 'node:stream';
 
-import { describe, it, expect, vi, afterEach, type SpyInstance } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 
 import { CheckPackageManager } from './CheckPackageManager.js';
 import { CliError } from './CliError.js';
@@ -66,7 +66,7 @@ describe('CheckPackageManager', () => {
     it('Throws when misconfigured', async () => {
       vi.stubEnv('npm_package_packageManager', '');
 
-      (readFile as unknown as SpyInstance).mockImplementationOnce(async () => JSON.stringify({ name: 'name' }));
+      vi.mocked(readFile).mockImplementationOnce(async () => JSON.stringify({ name: 'name' }));
 
       const cpm = new CheckPackageManager(undefined, {}, noOpConsole);
 
