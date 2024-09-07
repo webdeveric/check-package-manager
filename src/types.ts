@@ -17,11 +17,12 @@ export type CheckPackageManagerOptions = {
   debug: boolean | undefined;
 };
 
-export type DeepNonNullable<T> = T extends Record<PropertyKey, unknown>
-  ? {
-      [P in keyof T]: DeepNonNullable<T[P]>;
-    }
-  : NonNullable<T>;
+export type DeepNonNullable<T> =
+  T extends Record<PropertyKey, unknown>
+    ? {
+        [P in keyof T]: DeepNonNullable<T[P]>;
+      }
+    : NonNullable<T>;
 
 export type PackageManagerName = 'npm' | 'cnpm' | 'pnpm' | 'yarn';
 
