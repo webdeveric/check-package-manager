@@ -35,6 +35,10 @@ describe('parsePackageManagerUserAgent()', () => {
     expect(parsePackageManagerUserAgent('Not a user agent string')).toBeUndefined();
   });
 
+  it('Returns undefined when given a bad version', () => {
+    expect(parsePackageManagerUserAgent('pnpm/not-a-version')).toBeUndefined();
+  });
+
   it('Returns PackageMangerDetails', () => {
     expect(parsePackageManagerUserAgent('npm/8.5.5 node/v16.15.0 linux x64 workspaces/false')).toEqual('npm@8.5.5');
 
