@@ -21,22 +21,36 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "pnpm@9.9.0+sha512.60c18acd138bff695d339be6ad13f7e936eea6745660d4cc4a776d5247c540d0edee1a563695c183a66eb917ef88f2b4feb1fc25f32a7adcadc7aaf3438e99c1",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.14.0",
+      "onFail": "warn"
+    },
+    "runtime": [
+      {
+        "name": "node",
+        "version": "^26.12.0",
+        "onFail": "download"
+      }
+    ]
+  },
   "exports": {
+    ".": null,
     "./package.json": "./package.json"
   },
   "scripts": {
-    "//predemo": "pnpm build:dev",
+    "clean": "rm -rf ./cache ./dist ./out-tsc",
     "demo": "./dist/cli.mjs",
     "format": "prettier --write .",
     "build": "cross-env NODE_ENV=production node --experimental-json-modules --no-warnings ./build.mjs",
     "build:dev": "cross-env NODE_ENV=development node --experimental-json-modules --no-warnings ./build.mjs",
-    "typecheck": "tsc --noEmit && tsc -p ./tsconfig.project-files.json",
+    "typecheck": "tsc --build --force",
     "spellcheck": "cspell --no-progress \"./src/**/*.{ts,js,json}\" \"./*.{md,js,mjs,mts}\" \"./LICENSE\" \"./package.json\"",
     "lint": "eslint ./src ./*.{mjs,mts} --fix",
     "test": "vitest -c vitest.config.mts",
     "coverage": "vitest run  -c vitest.config.mts --coverage",
-    "validate": "validate-package-exports --info --check",
+    "validate": "validate-package-exports --info --check --strict-module-type",
     "prepublishOnly": "pnpm typecheck && pnpm spellcheck && pnpm lint && pnpm coverage && pnpm build && pnpm validate",
     "prepare": "husky"
   },
@@ -52,38 +66,36 @@
     "name": "Eric King",
     "url": "http://webdeveric.com/"
   },
-  "lint-staged": {
-    "*.{mjs,mts,ts}": [
-      "eslint --cache --fix"
-    ],
-    "*.{mjs,mts,ts,json,yml,md}": [
-      "cspell lint --no-progress --no-summary --no-must-find-files",
-      "prettier --write"
-    ]
-  },
   "prettier": "@webdeveric/prettier-config",
   "devDependencies": {
-    "@types/node": "^20.16.5",
-    "@types/semver": "^7.5.8",
-    "@vitest/coverage-v8": "^2.0.5",
-    "@webdeveric/eslint-config-ts": "^0.11.0",
-    "@webdeveric/prettier-config": "^0.3.0",
-    "@webdeveric/utils": "^0.36.0",
-    "cross-env": "^7.0.3",
-    "cspell": "^8.14.2",
-    "esbuild": "^0.23.1",
+    "@commitlint/config-conventional": "^21.2.3",
+    "@commitlint/types": "^21.2.3",
+    "@types/node": "^22.20.5",
+    "@types/semver": "^7.8.0",
+    "@typescript/native": "npm:typescript@^7.0.2",
+    "@vitest/coverage-v8": "^5.0.5",
+    "@webdeveric/eslint-config-ts": "^0.12.1",
+    "@webdeveric/prettier-config": "^0.4.0",
+    "@webdeveric/utils": "^1.6.0",
+    "commitlint": "^21.2.3",
+    "commitlint-plugin-cspell": "^0.9.5",
+    "cross-env": "^10.1.0",
+    "cspell": "^10.4.0",
+    "esbuild": "^0.28.2",
     "esbuild-plugin-clean": "^1.0.1",
-    "esbuild-plugin-environment": "^0.4.0",
+    "esbuild-plugin-environment": "^0.5.0",
     "esbuild-plugin-node-externals": "^1.0.1",
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-import-resolver-typescript": "^3.6.3",
-    "eslint-plugin-import": "^2.30.0",
-    "husky": "^9.1.5",
-    "lint-staged": "^15.2.10",
-    "prettier": "^3.3.3",
-    "typescript": "^5.5.4",
-    "validate-package-exports": "^0.6.1",
-    "vitest": "^2.0.5"
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-import-resolver-typescript": "^4.4.5",
+    "eslint-plugin-import": "^2.32.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
+    "prettier": "^3.9.10",
+    "rimraf": "^6.1.3",
+    "semantic-release": "^25.0.9",
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
+    "validate-package-exports": "^1.5.1",
+    "vitest": "^5.0.5"
   }
 }
