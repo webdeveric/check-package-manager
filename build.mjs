@@ -6,11 +6,7 @@ import { clean } from 'esbuild-plugin-clean';
 import { environmentPlugin } from 'esbuild-plugin-environment';
 import { nodeExternals } from 'esbuild-plugin-node-externals';
 
-const nodeVersion = Number.parseInt(String(process.versions.node.split('.').at(0)));
-
-const { default: pkg } = await import('./package.json', {
-  [nodeVersion < 20 ? 'assert' : 'with']: { type: 'json' },
-});
+import pkg from './package.json' with { type: 'json' };
 
 try {
   const results = await build({
@@ -23,15 +19,18 @@ try {
       '.js': '.mjs',
     },
     target: `node${process.versions.node}`,
-    minify: process.env.NODE_ENV === 'production',
+    minify: process.env['NODE_ENV'] === 'production',
+    legalComments: 'external',
     banner: {
       js: comment(
         `
-          @file ${pkg.name}
-          @version ${pkg.version}
-          @license ${pkg.license}
-          @copyright ${pkg.author.name} ${new Date().getFullYear()}
-          @see {@link ${pkg.homepage}}
+        ${pkg.name}
+
+        @license ${pkg.license}
+        @copyright Copyright (c) ${new Date().getFullYear()} ${pkg.author.name}
+        @see {@link ${pkg.homepage}}
+
+        SPDX-License-Identifier: ${pkg.license}
         `,
         {
           type: 'legal',
