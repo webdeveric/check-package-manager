@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "verbatimModuleSyntax": true,
+    "tsBuildInfoFile": "./cache/test.tsbuildinfo"
+  },
+  "include": ["src/**/*.test.ts"],
+  "references": [{ "path": "./tsconfig.src.json" }]
+}
