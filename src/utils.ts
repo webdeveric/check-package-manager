@@ -1,7 +1,6 @@
 import { readFile } from 'node:fs/promises';
-import path from 'node:path';
+import { resolve } from 'node:path';
 
-// import { PackageMangerDetails } from './PackageMangerDetails.js';
 import { isPackageManagerName, isPackageManagerString, isVersionString } from './type-predicate.js';
 
 import type { PackageManagerString } from './types.js';
@@ -43,7 +42,7 @@ export const getJson = async <T extends Record<string, unknown> = Record<string,
 };
 
 export const getPackageJsonPath = (): string => {
-  return process.env.npm_package_json || path.resolve(process.cwd(), './package.json');
+  return process.env['npm_package_json'] || resolve(process.cwd(), './package.json');
 };
 
 export const getPackageJson = async <T extends Record<string, unknown> = Record<string, unknown>>(): Promise<T> => {
@@ -61,7 +60,7 @@ export const getPackageManagerFromPackageJson = async (): Promise<string | undef
 export const getConfiguredPackageManager = async (): Promise<PackageManagerString | undefined> => {
   const packageManagerProperty =
     // Yarn and pnpm will define this env var.
-    process.env.npm_package_packageManager || (await getPackageManagerFromPackageJson());
+    process.env['npm_package_packageManager'] || (await getPackageManagerFromPackageJson());
 
   return isPackageManagerString(packageManagerProperty) ? packageManagerProperty : undefined;
 };

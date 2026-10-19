@@ -1,9 +1,8 @@
 import type { PackageManagerName, PackageManagerString, VersionString } from './types.js';
 
-const packageManagerNames = new Set<string>(['npm', 'cnpm', 'pnpm', 'yarn'] satisfies PackageManagerName[]);
+const packageManagerNames = new Set<unknown>(['npm', 'cnpm', 'pnpm', 'yarn'] satisfies PackageManagerName[]);
 
-export const isPackageManagerName = (input: unknown): input is PackageManagerName =>
-  packageManagerNames.has(String(input));
+export const isPackageManagerName = (input: unknown): input is PackageManagerName => packageManagerNames.has(input);
 
 export const isVersionString = (input: unknown): input is VersionString =>
   typeof input === 'string' && /^\d+\.\d+.\d+([-+].+)?$/.test(input);

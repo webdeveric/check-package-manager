@@ -39,18 +39,19 @@ export class PackageMangerDetails implements ParsedPackageManager {
 
   static parse(input: string): ParsedPackageManager {
     // RegExp modified from https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
-    const match = input.match(
-      /^(?<name>[pc]?npm|yarn)(?:@(?<version>(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)(?:-(?<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?)(?:\+(?<buildMetaData>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?)?$/,
-    );
+    const match =
+      /^(?<name>[pc]?npm|yarn)(?:@(?<version>(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)(?:-(?<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?)(?:\+(?<buildMetaData>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?)?$/.exec(
+        input,
+      );
 
     const { name, version, major, minor, patch, prerelease, buildMetaData } = match?.groups ?? {};
 
     return {
       name,
       version,
-      major: major ? Number.parseInt(major) : undefined,
-      minor: minor ? Number.parseInt(minor) : undefined,
-      patch: patch ? Number.parseInt(patch) : undefined,
+      major: major ? Number.parseInt(major, 10) : undefined,
+      minor: minor ? Number.parseInt(minor, 10) : undefined,
+      patch: patch ? Number.parseInt(patch, 10) : undefined,
       prerelease,
       buildMetaData,
     };
