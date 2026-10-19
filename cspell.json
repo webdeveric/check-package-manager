@@ -3,6 +3,7 @@
   "words": [
     "cacache",
     "cnpm",
+    "commitlint",
     "corepack",
     "downlevel",
     "env",
@@ -19,10 +20,12 @@
     "preinstall",
     "reporter",
     "typecheck",
+    "unrs-resolver",
     "unstub",
+    "vitest",
     "webdeveric"
   ],
-  "ignorePaths": ["node_modules/**", ".vscode/*.json"],
+  "ignorePaths": [".gitignore", "node_modules/**", ".vscode/*.json", "pnpm-lock.yaml", "pnpm-workspace.yaml"],
   "languageSettings": [
     {
       "languageId": "commit-msg",
