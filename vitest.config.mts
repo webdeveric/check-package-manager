@@ -6,7 +6,6 @@ export default defineConfig({
     unstubGlobals: true,
     include: ['./src/**/*.test.ts'],
     coverage: {
-      all: false,
       provider: 'v8',
     },
   },

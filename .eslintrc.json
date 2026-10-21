@@ -6,14 +6,15 @@
     "es6": true,
     "node": true
   },
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": ["./tsconfig.json"],
+    "projectService": true,
     "ecmaFeatures": {
       "jsx": false
     }
   },
   "settings": {
-    "import/extensions": [".ts", ".mts", ".cts", ".js", ".mjs", ".cjs", ".json"],
+    "import/extensions": [".ts", ".mts", ".cts", ".js", ".json"],
     "import/resolver": {
       "typescript": {
         "project": "./tsconfig.json"
@@ -54,29 +55,16 @@
           "caseInsensitive": true
         },
         "groups": ["builtin", "external", "internal", "parent", ["sibling", "index"], "type"],
-        "newlines-between": "always",
-        "pathGroups": [
-          {
-            "pattern": "@{src,commands}/**",
-            "group": "internal",
-            "position": "after"
-          }
-        ]
+        "newlines-between": "always"
       }
     ],
     "sort-imports": "off"
   },
   "overrides": [
     {
-      "files": ["./*.mjs", "./*.mts"],
-      "parserOptions": {
-        "project": ["./tsconfig.project-files.json"]
-      }
-    },
-    {
-      "files": ["**/*.test.ts"],
+      "files": ["*.cts"],
       "rules": {
-        "@typescript-eslint/no-explicit-any": ["off"]
+        "@typescript-eslint/no-require-imports": "off"
       }
     }
   ]

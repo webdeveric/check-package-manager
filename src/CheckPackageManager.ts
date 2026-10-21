@@ -23,7 +23,7 @@ export class CheckPackageManager {
     this.options = {
       info: options.info ?? false,
       // GitHub actions will set this env var when runners have debug logging enabled.
-      debug: options.debug ?? process.env.RUNNER_DEBUG === '1',
+      debug: options.debug ?? process.env['RUNNER_DEBUG'] === '1',
     };
 
     this.console = console;
@@ -84,7 +84,7 @@ export class CheckPackageManager {
       return;
     }
 
-    const currentPackageManagerString = parsePackageManagerUserAgent(process.env.npm_config_user_agent);
+    const currentPackageManagerString = parsePackageManagerUserAgent(process.env['npm_config_user_agent']);
 
     const currentPackageManager = currentPackageManagerString
       ? new PackageMangerDetails(currentPackageManagerString)
@@ -117,14 +117,14 @@ export class CheckPackageManager {
     const comparison = requiredPackageManager.compare(currentPackageManager);
 
     if (comparison === ComparisonResults.Same) {
-      this.info(`${process.env.npm_package_name} is using the correct package manager.`);
+      this.info(`${process.env['npm_package_name']} is using the correct package manager.`);
     } else {
       if (!this.packageManagerArg) {
         this.info(`Try running "corepack enable" then "${requiredPackageManager.name} install"`);
       }
 
       throw new CliError(
-        `${process.env.npm_package_name} should be using ${requiredPackageManager} instead of ${currentPackageManagerString}`,
+        `${process.env['npm_package_name']} should be using ${requiredPackageManager} instead of ${currentPackageManagerString}`,
         comparison === ComparisonResults.DifferentName
           ? ExitCodes.WrongPackageManager
           : ExitCodes.WrongPackageManagerVersion,

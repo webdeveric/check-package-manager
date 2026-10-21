@@ -23,9 +23,7 @@ try {
       },
     });
 
-    const check = new CheckPackageManager(args.positionals.at(0), args.values);
-
-    await check.run();
+    await new CheckPackageManager(args.positionals.at(0), args.values).run();
   } else {
     console.warn('util.parseArgs is not a function. Please use Node JS >= 16.17');
   }

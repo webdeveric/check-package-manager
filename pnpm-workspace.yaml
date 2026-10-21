@@ -1,0 +1,21 @@
+allowBuilds:
+  esbuild: true
+  unrs-resolver: true
+
+audit:
+  ignorePrune: true
+
+auditConfig:
+  ignoreGhsas:
+    - GHSA-vfj7-8cjw-p6xm
+
+autoInstallPeers: true
+
+enablePrePostScripts: true
+
+minimumReleaseAge: 2880 # 2 day
+
+minimumReleaseAgeExcludePrune: true
+
+update:
+  githubActions: true

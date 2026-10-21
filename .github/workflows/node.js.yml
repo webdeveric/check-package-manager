@@ -6,29 +6,63 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  HUSKY: 0
+
+permissions:
+  contents: read # for checkout
+
 jobs:
-  ci:
-    name: Continuous Integration
+  core:
+    name: Continuous Integration Core Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup
+        uses: pnpm/setup@a0881977cd8ea73b1ed212236c99ca10dcc80cf4 # v3.1.1
+        with:
+          cache: true
+          install: false # Audit before installing dependencies
+
+      - name: Audit dependencies
+        run: pnpm audit --audit-level=moderate --prod
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Verify registry signatures for installed packages
+        run: pnpm audit signatures
+
+      - name: Check spelling
+        run: pnpm spellcheck
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Linting
+        run: pnpm lint
+
+      - name: Build
+        run: pnpm build
+
+  tests:
+    needs: core
+    name: Continuous Integration Tests
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-22.04, windows-2022]
+        os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v2
-      - name: Use Node.js
-        uses: actions/setup-node@v4
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup
+        uses: pnpm/setup@a0881977cd8ea73b1ed212236c99ca10dcc80cf4 # v3.1.1
         with:
-          node-version-file: '.nvmrc'
-          cache: 'pnpm'
-      - name: Installing dependencies
-        run: pnpm install
-      - name: Linting
-        run: pnpm lint
-      - name: Type checking
-        run: pnpm typecheck
-      - name: Testing
+          cache: true
+
+      - name: Test
         run: pnpm coverage
-      - name: Building
-        run: pnpm build
