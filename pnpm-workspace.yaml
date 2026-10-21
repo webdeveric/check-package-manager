@@ -19,3 +19,13 @@ minimumReleaseAgeExcludePrune: true
 
 update:
   githubActions: true
+
+# The semantic-release plugins resolve the preset from their own location first, which finds the hoisted
+# v10 used by commitlint. v10 requires conventional-changelog-writer@9, but the plugins still use writer@8.
+packageExtensions:
+  '@semantic-release/commit-analyzer':
+    dependencies:
+      conventional-changelog-conventionalcommits: ^9.3.1
+  '@semantic-release/release-notes-generator':
+    dependencies:
+      conventional-changelog-conventionalcommits: ^9.3.1
