@@ -1,0 +1,53 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency: release
+
+env:
+  HUSKY: 0
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      contents: write # to be able to publish a GitHub release
+      issues: write # to be able to comment on released issues
+      pull-requests: write # to be able to comment on released pull requests
+      id-token: write # to enable use of OIDC for npm provenance
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Setup
+        uses: pnpm/setup@a0881977cd8ea73b1ed212236c99ca10dcc80cf4 # v3.1.1
+        with:
+          cache: true
+          install: false # Audit before installing dependencies
+
+      - name: Audit dependencies
+        run: pnpm audit --audit-level=moderate --prod
+
+      - name: Installing dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Verify registry signatures for installed packages
+        run: pnpm audit signatures
+
+      - name: Building
+        run: pnpm build
+
+      - name: Install npm for Trusted Publishing
+        run: pnpm add --global npm@latest
+
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: pnpm exec semantic-release
